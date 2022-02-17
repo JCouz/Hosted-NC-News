@@ -3,7 +3,6 @@ const app = require('../app.js');
 const request = require('supertest');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data/index.js');
-const errors = require('../error-handling.js');
 
 beforeEach(() => seed(testData));
 
