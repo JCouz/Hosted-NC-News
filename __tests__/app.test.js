@@ -1,28 +1,28 @@
-const db = require('../db/connection.js');
-const app = require('../app.js');
-const request = require('supertest');
-const seed = require('../db/seeds/seed');
-const testData = require('../db/data/test-data/index.js');
+const db = require("../db/connection.js");
+const app = require("../app.js");
+const request = require("supertest");
+const seed = require("../db/seeds/seed");
+const testData = require("../db/data/test-data/index.js");
 
 beforeEach(() => seed(testData));
 
 afterAll(() => db.end());
 
-describe('/api', () => {
-  test('status 200 - returns an all ok message', () => {
+describe("/api", () => {
+  test("status 200 - returns an all ok message", () => {
     return request(app)
-      .get('/api')
+      .get("/api")
       .expect(200)
       .then((response) => {
-        expect(response.body.msg).toBe('all ok');
+        expect(response.body.msg).toBe("all ok");
       });
   });
 });
 
-describe('GET /api/topics', () => {
-  test('status 200 - should return an array of topic objects', () => {
+describe("GET /api/topics", () => {
+  test("status 200 - should return an array of topic objects", () => {
     return request(app)
-      .get('/api/topics')
+      .get("/api/topics")
       .expect(200)
       .then((response) => {
         expect(response.body.topics.length).toBe(3);
@@ -38,48 +38,107 @@ describe('GET /api/topics', () => {
   });
 });
 
-describe('GET /api/articles/:article_id', () => {
-  test('status:200 - should return an article object containing 7 keys', () => {
+describe("GET /api/articles/:article_id", () => {
+  test("status:200 - should return an article object containing 7 keys", () => {
     return request(app)
-      .get('/api/articles/1')
+      .get("/api/articles/1")
       .expect(200)
       .then((response) => {
         expect(response.body.article).toEqual(
           expect.objectContaining({
             article_id: 1,
-            title: 'Living in the shadow of a great man',
-            topic: 'mitch',
-            author: 'butter_bridge',
-            body: 'I find this existence challenging',
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
             created_at: expect.any(String),
             votes: 100,
           })
         );
       });
   });
-  test('status: 404 responds with message when path not found', () => {
+  test("status: 404 responds with message when path not found", () => {
     return request(app)
-      .get('/api/articles/10000')
+      .get("/api/articles/10000")
       .expect(404)
       .then((response) => {
-        expect(response.body.msg).toBe('Path not found');
+        expect(response.body.msg).toBe("Path not found");
       });
   });
-  test('status: 400 responds with message when given a bad request', () => {
+  test("status: 400 responds with message when given a bad request", () => {
     return request(app)
-      .get('/api/articles/person')
+      .get("/api/articles/person")
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toBe('Bad request');
+        expect(response.body.msg).toBe("Bad request");
       });
   });
 });
 
-test('status: 404 responds with message when path not found', () => {
+describe.only("PATCH /api/articles/:article_id", () => {
+  test("status:200 - should return an updated article where votes = 101", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: expect.any(String),
+            votes: 101,
+          })
+        );
+      });
+  });
+  test("status:200 - should return an updated article where votes = 0", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -100 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: expect.any(String),
+            votes: 0,
+          })
+        );
+      });
+  });
+  test("status: 400 responds with message when body is malformed", () => {
+    return request(app)
+      .patch("/api/articles/10000")
+      .send({ inc_votes: "hello" })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad request. Invalid inc_votes");
+      });
+  });
+  test("status: 400 responds with message when body is malformed", () => {
+    return request(app)
+      .patch("/api/articles/10000")
+      .send({ vote: -1000 })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad request. Invalid inc_votes");
+      });
+  });
+});
+
+test("status: 404 responds with message when path not found", () => {
   return request(app)
-    .get('/api/trees')
+    .get("/api/trees")
     .expect(404)
     .then((response) => {
-      expect(response.body.msg).toBe('Path not found');
+      expect(response.body.msg).toBe("Path not found");
     });
 });
