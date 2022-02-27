@@ -75,7 +75,7 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
-describe.only("PATCH /api/articles/:article_id", () => {
+describe("PATCH /api/articles/:article_id", () => {
   test("status:200 - should return an updated article where votes = 101", () => {
     return request(app)
       .patch("/api/articles/1")
@@ -130,6 +130,24 @@ describe.only("PATCH /api/articles/:article_id", () => {
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Bad request. Invalid inc_votes");
+      });
+  });
+});
+
+describe.only("GET /api/users", () => {
+  test("status 200 - should return an array of objects containing username property", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.length).toBe(4);
+        response.body.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+            })
+          );
+        });
       });
   });
 });
