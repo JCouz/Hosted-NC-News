@@ -1,6 +1,6 @@
 const express = require('express');
 const { getTopics } = require('./controllers/topics-controller.js');
-const { getArticle } = require('./controllers/articles-controllers');
+const { getArticle, patchArticle} = require('./controllers/articles-controllers');
 const {
   customError,
   trigger404,
@@ -16,6 +16,8 @@ app.get('/api', (req, res) => {
 app.get('/api/topics', getTopics);
 
 app.get('/api/articles/:article_id', getArticle);
+
+app.patch('/api/articles/:article_id', patchArticle);
 
 app.all('/*', trigger404);
 app.use(customError);
