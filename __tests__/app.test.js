@@ -152,7 +152,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("status 200 - should return an array of articles objects", () => {
     return request(app)
       .get("/api/articles")
@@ -172,6 +172,28 @@ describe.only("GET /api/articles", () => {
             })
           );
         });
+      });
+  });
+});
+
+describe.only("GET /api/articles/:article_id", () => {
+  test("status:200 - should return an article object with a comment count of 11", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: expect.any(String),
+            votes: 100,
+            comment_count: 11,
+          })
+        );
       });
   });
 });
