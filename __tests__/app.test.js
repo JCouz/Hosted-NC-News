@@ -134,7 +134,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
-describe.only("GET /api/users", () => {
+describe("GET /api/users", () => {
   test("status 200 - should return an array of objects containing username property", () => {
     return request(app)
       .get("/api/users")
@@ -145,6 +145,30 @@ describe.only("GET /api/users", () => {
           expect(user).toEqual(
             expect.objectContaining({
               username: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+});
+
+describe.only("GET /api/articles", () => {
+  test("status 200 - should return an array of articles objects", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.length).toBe(12);
+        response.body.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: expect.any(String),
+              topic: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
             })
           );
         });

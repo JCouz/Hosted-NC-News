@@ -1,7 +1,16 @@
 const {
   fetchArticle,
   updateArticleVotes,
+  fetchArticles,
 } = require("../models/articles-models");
+
+exports.getArticles = (req, res, next) => {
+  fetchArticles()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch(next);
+};
 
 exports.getArticle = (req, res, next) => {
   const article_id = req.params.article_id;

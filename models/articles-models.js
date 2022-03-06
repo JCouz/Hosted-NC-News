@@ -1,5 +1,12 @@
 const db = require("../db/connection.js");
 
+exports.fetchArticles = async () => {
+  const result = await db.query(
+    "SELECT * FROM articles ORDER BY created_at DESC;"
+  );
+  return result.rows;
+};
+
 exports.fetchArticle = (article_id) => {
   if (isNaN(article_id)) {
     return Promise.reject({ status: 400, msg: "Bad request" });
