@@ -152,7 +152,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("status 200 - should return an array of articles objects", () => {
     return request(app)
       .get("/api/articles")
@@ -217,6 +217,26 @@ describe("GET /api/articles/:article_id/comments", () => {
             })
           );
         });
+      });
+  });
+});
+
+describe.only("POST /api/articles/:article_id/comments", () => {
+  test("status:200 - should return an object containing the added comment", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ username: "butter_bridge", body: "Hello World!" })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+            author: "butter_bridge",
+            body: "Hello World!",
+            created_at: expect.any(String),
+            votes: 0,
+          })
+        );
       });
   });
 });
