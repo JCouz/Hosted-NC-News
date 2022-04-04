@@ -5,6 +5,7 @@ const {
   patchArticle,
   getArticles,
   getArticleComments,
+  postArticleComments,
 } = require("./controllers/articles-controllers");
 const { getUsers } = require("./controllers/users-controller");
 const {
@@ -30,6 +31,8 @@ app.get("/api/users", getUsers);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id/comments", getArticleComments);
+
+app.post("/api/articles/:article_id/comments", postArticleComments);
 
 app.all("/*", trigger404);
 app.use(customError);

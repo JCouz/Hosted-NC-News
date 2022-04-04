@@ -3,6 +3,7 @@ const {
   updateArticleVotes,
   fetchArticles,
   fetchArticleComments,
+  createArticleComment,
 } = require("../models/articles-models");
 
 exports.getArticles = (req, res, next) => {
@@ -25,6 +26,16 @@ exports.getArticle = (req, res, next) => {
 exports.getArticleComments = (req, res, next) => {
   const article_id = req.params.article_id;
   fetchArticleComments(article_id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch(next);
+};
+
+exports.postArticleComments = (req, res, next) => {
+  const article_id = req.params.article_id;
+  const { username, body } = req.body;
+  createArticleComment(article_id, username, body)
     .then((data) => {
       res.status(200).send(data);
     })
