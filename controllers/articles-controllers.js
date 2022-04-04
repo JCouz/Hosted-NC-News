@@ -40,9 +40,10 @@ exports.getArticleComments = (req, res, next) => {
 exports.postArticleComments = (req, res, next) => {
   const article_id = req.params.article_id;
   const { username, body } = req.body;
+
   createArticleComment(article_id, username, body)
     .then((data) => {
-      res.status(200).send(data);
+      res.status(201).send(data);
     })
     .catch(next);
 };
