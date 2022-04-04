@@ -4,6 +4,7 @@ const {
   fetchArticles,
   fetchArticleComments,
   createArticleComment,
+  deleteArticleComment,
 } = require("../models/articles-models");
 
 exports.getArticles = (req, res, next) => {
@@ -42,6 +43,15 @@ exports.postArticleComments = (req, res, next) => {
   createArticleComment(article_id, username, body)
     .then((data) => {
       res.status(200).send(data);
+    })
+    .catch(next);
+};
+
+exports.deleteComment = (req, res, next) => {
+  const comment_id = req.params.comment_id;
+  deleteArticleComment(comment_id)
+    .then(() => {
+      res.status(204).send();
     })
     .catch(next);
 };

@@ -90,3 +90,16 @@ exports.createArticleComment = async (article_id, username, body) => {
 
   return result.rows[0];
 };
+
+exports.deleteArticleComment = async (comment_id) => {
+  if (isNaN(comment_id)) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
+  const result = await db.query("DELETE FROM comments WHERE comment_id = $1", [
+    comment_id,
+  ]);
+
+  if (result.rowCount === 0)
+    return Promise.reject({ status: 404, msg: "Non existent id" });
+};
