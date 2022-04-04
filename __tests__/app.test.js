@@ -152,7 +152,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("status 200 - should return an array of articles objects sorted by created_at DESC", () => {
     return request(app)
       .get("/api/articles?sort_by=created_at")
@@ -252,4 +252,16 @@ test("status: 404 responds with message when path not found", () => {
     .then((response) => {
       expect(response.body.msg).toBe("Path not found");
     });
+});
+
+describe.only("DELETE /api/comments/:comment_id", () => {
+  test("status:204 - should return nothing", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  test("status:404 - should return non existent id", () => {
+    return request(app).delete("/api/comments/9999999").expect(404);
+  });
+  test("status:400 - should return bad request", () => {
+    return request(app).delete("/api/comments/abc").expect(400);
+  });
 });
