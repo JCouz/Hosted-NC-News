@@ -2,7 +2,7 @@ const db = require("../db/connection.js");
 
 exports.fetchArticles = async () => {
   const result = await db.query(
-    "SELECT * FROM articles ORDER BY created_at DESC;"
+    "SELECT * , (SELECT COUNT(*)::int FROM comments WHERE comments.article_id = articles.article_id) AS comment_count FROM articles ORDER BY created_at DESC;"
   );
   return result.rows;
 };

@@ -152,7 +152,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe("GET /api/articles", () => {
+describe.only("GET /api/articles", () => {
   test("status 200 - should return an array of articles objects", () => {
     return request(app)
       .get("/api/articles")
@@ -169,6 +169,7 @@ describe("GET /api/articles", () => {
               body: expect.any(String),
               created_at: expect.any(String),
               votes: expect.any(Number),
+              comment_count: expect.any(Number),
             })
           );
         });
@@ -198,7 +199,7 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
-describe.only("GET /api/articles/:article_id/comments", () => {
+describe("GET /api/articles/:article_id/comments", () => {
   test("status:200 - should return an array of comments for the specified article_id", () => {
     return request(app)
       .get("/api/articles/1/comments")
