@@ -1,10 +1,36 @@
 const db = require("../db/connection.js");
 
-exports.fetchArticles = async () => {
-  const result = await db.query(
-    "SELECT * , (SELECT COUNT(*)::int FROM comments WHERE comments.article_id = articles.article_id) AS comment_count FROM articles ORDER BY created_at DESC;"
-  );
-  return result.rows;
+exports.fetchArticles = async (
+  sort_by = "created_at",
+  order = "DESC",
+  topic
+) => {
+  if (order != "ASC" && order != "DESC") {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
+  if (
+    !["article_id", "title", "topic", "author", "created_at", "votes"].includes(
+      sort_by
+    )
+  ) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
+  if (topic) {
+    return (
+      await db.query(
+        `SELECT *, (SELECT COUNT(*)::int FROM comments WHERE comments.article_id = articles.article_id) AS comment_count FROM articles WHERE topic = $1 ORDER BY ${sort_by} ${order};`,
+        [topic]
+      )
+    ).rows;
+  }
+
+  return (
+    await db.query(
+      `SELECT *, (SELECT COUNT(*)::int FROM comments WHERE comments.article_id = articles.article_id) AS comment_count FROM articles ORDER BY ${sort_by} ${order};`
+    )
+  ).rows;
 };
 
 exports.fetchArticle = (article_id) => {

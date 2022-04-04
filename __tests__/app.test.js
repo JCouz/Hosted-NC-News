@@ -152,27 +152,31 @@ describe("GET /api/users", () => {
   });
 });
 
-describe("GET /api/articles", () => {
-  test("status 200 - should return an array of articles objects", () => {
+describe.only("GET /api/articles", () => {
+  test("status 200 - should return an array of articles objects sorted by created_at DESC", () => {
     return request(app)
-      .get("/api/articles")
+      .get("/api/articles?sort_by=created_at")
       .expect(200)
-      .then((response) => {
-        expect(response.body.length).toBe(12);
-        response.body.forEach((article) => {
-          expect(article).toEqual(
-            expect.objectContaining({
-              article_id: expect.any(Number),
-              title: expect.any(String),
-              topic: expect.any(String),
-              author: expect.any(String),
-              body: expect.any(String),
-              created_at: expect.any(String),
-              votes: expect.any(Number),
-              comment_count: expect.any(Number),
-            })
-          );
+      .then(({ body: articles }) => {
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+  test("status 200 - should return an array of articles whose topic is cats", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then(({ body: articles }) => {
+        articles.forEach((article) => {
+          expect(article.topic).toEqual("cats");
         });
+      });
+  });
+  test("status 200 - should return an array of articles objects sorted by created_at ", () => {
+    return request(app)
+      .get("/api/articles?sort_by=created_at&order=ASC")
+      .expect(200)
+      .then(({ body: articles }) => {
+        expect(articles).toBeSortedBy("created_at", { descending: false });
       });
   });
 });
@@ -221,7 +225,7 @@ describe("GET /api/articles/:article_id/comments", () => {
   });
 });
 
-describe.only("POST /api/articles/:article_id/comments", () => {
+describe("POST /api/articles/:article_id/comments", () => {
   test("status:200 - should return an object containing the added comment", () => {
     return request(app)
       .post("/api/articles/1/comments")
