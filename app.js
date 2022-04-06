@@ -14,22 +14,21 @@ const {
   trigger404,
   trigger500,
 } = require('./controllers/error-handling.js');
+const { getApi } = require('./controllers/api-controllers.js');
 const app = express();
 app.use(express.json());
 
-app.get('/api', (req, res) => {
-  res.status(200).send({ msg: 'all ok pal' });
-});
+app.get('/api', getApi);
 
 app.get('/api/topics', getTopics);
+
+app.get('/api/articles', getArticles);
+
+app.get('/api/users', getUsers);
 
 app.get('/api/articles/:article_id', getArticle);
 
 app.patch('/api/articles/:article_id', patchArticle);
-
-app.get('/api/users', getUsers);
-
-app.get('/api/articles', getArticles);
 
 app.get('/api/articles/:article_id/comments', getArticleComments);
 
