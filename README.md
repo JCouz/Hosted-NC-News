@@ -7,9 +7,9 @@ It is deployed via Heroku, which you can visit [here](https://jcouz-nc-news.hero
 
 This API and all of its endpoints were created using test driven development via Jest and Supertest.
 
-You may fork/clone this repo as you wish. Once cloned and within the repo locally, please follow the instillation instructions below.
+You may fork/clone this repo as you wish. Once cloned and within the repo locally, please follow the installation instructions below.
 
-## Instillation
+## Installation
 
 Firstly, please ensure you have a minimum of Node v17.2.0 & PSQL v12.9 in order to avoid any issues when using this repo.
 
