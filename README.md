@@ -27,7 +27,7 @@ You will also need to create the following files in the root directory:
 `.env.test (contents: PGDATABASE=nc_news_test)`
 `.env.development (contents: PGDATABASE=nc_news)`
 
-Then, please run the follow commands ro ensure the database is seeded.
+Then, please run the following commands to ensure the database is seeded.
 
 ```
 npm run setup-dbs
