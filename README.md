@@ -14,6 +14,7 @@ You may fork/clone this repo as you wish. Once cloned and within the repo locall
 Firstly, please ensure you have a minimum of Node v17.2.0 & PSQL v12.9 in order to avoid any issues when using this repo.
 
 If you do not have the correct version of Node click [here](https://nodejs.org/en/download/) to install the latest version.
+
 If you do not have the correct version of PSQL installed click [here](https://www.postgresql.org/download/) to install the latest version.
 
 Following this, please install the dependencies with:
