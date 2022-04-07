@@ -20,7 +20,6 @@ Following this, please install the dependencies with:
 
 ```
 npm install
-
 ```
 
 You will also need to create the following files in the root directory:
@@ -31,18 +30,14 @@ You will also need to create the following files in the root directory:
 Then, please run the follow commands ro ensure the database is seeded.
 
 ```
-
 npm run setup-dbs
 npm run seed
-
 ```
 
 When all the previous commands have been carried out, you can run the test with:
 
 ```
-
 npm test
-
 ```
 
 ## Tech Used
