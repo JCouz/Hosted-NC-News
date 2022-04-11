@@ -176,8 +176,8 @@ describe('GET /api/articles', () => {
     return request(app)
       .get('/api/articles')
       .expect(200)
-      .then(({ body: articles }) => {
-        articles.forEach((article) => {
+      .then((response) => {
+        response.body.articles.forEach((article) => {
           expect(article).toEqual(
             expect.objectContaining({
               article_id: expect.any(Number),
@@ -196,24 +196,28 @@ describe('GET /api/articles', () => {
     return request(app)
       .get('/api/articles')
       .expect(200)
-      .then(({ body: articles }) => {
-        expect(articles).toBeSortedBy('created_at', { descending: true });
+      .then((response) => {
+        expect(response.body.articles).toBeSortedBy('created_at', {
+          descending: true,
+        });
       });
   });
   test('Status 200 - should return an array of articles objects sorted by created_at DESC', () => {
     return request(app)
       .get('/api/articles?sort_by=created_at')
       .expect(200)
-      .then(({ body: articles }) => {
-        expect(articles).toBeSortedBy('created_at', { descending: true });
+      .then((response) => {
+        expect(response.body.articles).toBeSortedBy('created_at', {
+          descending: true,
+        });
       });
   });
   test('Status 200 - should return an array of articles whose topic is cats', () => {
     return request(app)
       .get('/api/articles?topic=cats')
       .expect(200)
-      .then(({ body: articles }) => {
-        articles.forEach((article) => {
+      .then((response) => {
+        response.body.articles.forEach((article) => {
           expect(article.topic).toEqual('cats');
         });
       });
@@ -222,8 +226,10 @@ describe('GET /api/articles', () => {
     return request(app)
       .get('/api/articles?sort_by=created_at&order=ASC')
       .expect(200)
-      .then(({ body: articles }) => {
-        expect(articles).toBeSortedBy('created_at', { descending: false });
+      .then((response) => {
+        expect(response.body.articles).toBeSortedBy('created_at', {
+          descending: false,
+        });
       });
   });
   test('Status 400 - invalid sort_by query ', () => {
@@ -285,7 +291,7 @@ describe('PATCH /api/articles/:article_id', () => {
       .send({ inc_votes: 1 })
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
+        expect(response.body.article).toEqual(
           expect.objectContaining({
             article_id: 1,
             title: 'Living in the shadow of a great man',
@@ -304,7 +310,7 @@ describe('PATCH /api/articles/:article_id', () => {
       .send({ inc_votes: -100 })
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
+        expect(response.body.article).toEqual(
           expect.objectContaining({
             article_id: 1,
             title: 'Living in the shadow of a great man',
@@ -343,8 +349,8 @@ describe('GET /api/articles/:article_id/comments', () => {
       .get('/api/articles/1/comments')
       .expect(200)
       .then((response) => {
-        expect(response.body.length).toBe(11);
-        response.body.forEach((comment) => {
+        expect(response.body.comments.length).toBe(11);
+        response.body.comments.forEach((comment) => {
           expect(comment).toEqual(
             expect.objectContaining({
               comment_id: expect.any(Number),
@@ -375,7 +381,7 @@ describe('POST /api/articles/:article_id/comments', () => {
       .send({ username: 'butter_bridge', body: 'Hello World!' })
       .expect(201)
       .then((response) => {
-        expect(response.body).toEqual(
+        expect(response.body.comment).toEqual(
           expect.objectContaining({
             comment_id: expect.any(Number),
             article_id: 1,
@@ -398,7 +404,7 @@ describe('POST /api/articles/:article_id/comments', () => {
       })
       .expect(201)
       .then((response) => {
-        expect(response.body).toEqual(
+        expect(response.body.comment).toEqual(
           expect.objectContaining({
             comment_id: expect.any(Number),
             author: 'butter_bridge',
