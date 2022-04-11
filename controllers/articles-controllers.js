@@ -5,7 +5,7 @@ const {
   fetchArticleComments,
   createArticleComment,
   deleteArticleComment,
-} = require("../models/articles-models");
+} = require('../models/articles-models');
 
 exports.getArticles = (req, res, next) => {
   const sort_by = req.query.sort_by;
@@ -13,8 +13,8 @@ exports.getArticles = (req, res, next) => {
   const topic = req.query.topic;
 
   fetchArticles(sort_by, order, topic)
-    .then((data) => {
-      res.status(200).json(data);
+    .then((articles) => {
+      res.status(200).send({ articles });
     })
     .catch(next);
 };
@@ -22,8 +22,8 @@ exports.getArticles = (req, res, next) => {
 exports.getArticle = (req, res, next) => {
   const article_id = req.params.article_id;
   fetchArticle(article_id)
-    .then((data) => {
-      res.status(200).send({ article: data });
+    .then((article) => {
+      res.status(200).send({ article });
     })
     .catch(next);
 };
@@ -31,8 +31,8 @@ exports.getArticle = (req, res, next) => {
 exports.getArticleComments = (req, res, next) => {
   const article_id = req.params.article_id;
   fetchArticleComments(article_id)
-    .then((data) => {
-      res.status(200).send(data);
+    .then((comments) => {
+      res.status(200).send({ comments });
     })
     .catch(next);
 };
@@ -42,8 +42,8 @@ exports.postArticleComments = (req, res, next) => {
   const { username, body } = req.body;
 
   createArticleComment(article_id, username, body)
-    .then((data) => {
-      res.status(201).send(data);
+    .then((comment) => {
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
@@ -63,8 +63,8 @@ exports.patchArticle = (req, res, next) => {
   const { inc_votes } = req.body;
 
   updateArticleVotes(article_id, inc_votes)
-    .then((data) => {
-      res.status(200).send(data);
+    .then((article) => {
+      res.status(200).send({ article });
     })
     .catch(next);
 };
