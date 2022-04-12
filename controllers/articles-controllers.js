@@ -75,7 +75,7 @@ exports.patchComment = (req, res, next) => {
 
   const { inc_votes } = req.body;
 
-  updateCommentVotes(article_id, inc_votes)
+  updateCommentVotes(comment_id, inc_votes)
     .then((comment) => {
       res.status(200).send({ comment });
     })
