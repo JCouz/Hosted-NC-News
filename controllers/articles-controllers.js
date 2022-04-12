@@ -71,7 +71,7 @@ exports.patchArticle = (req, res, next) => {
 };
 
 exports.patchComment = (req, res, next) => {
-  const article_id = req.params.article_id;
+  const comment_id = req.params.comment_id;
 
   const { inc_votes } = req.body;
 
