@@ -74,7 +74,7 @@ exports.fetchArticleComments = async (article_id) => {
     return Promise.reject({ status: 404, msg: 'Non existent id' });
 
   result = await db.query(
-    'SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id = $1;',
+    'SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id = $1 ORDER BY comment_id DESC;',
     [article_id]
   );
 
