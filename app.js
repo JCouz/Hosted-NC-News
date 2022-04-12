@@ -7,6 +7,7 @@ const {
   getArticleComments,
   postArticleComments,
   deleteComment,
+  patchComment,
 } = require('./controllers/articles-controllers');
 const { getUsers } = require('./controllers/users-controller');
 const {
@@ -32,6 +33,8 @@ app.get('/api/users', getUsers);
 app.get('/api/articles/:article_id', getArticle);
 
 app.patch('/api/articles/:article_id', patchArticle);
+
+app.patch('/api/comments/:comment_id', patchComment);
 
 app.get('/api/articles/:article_id/comments', getArticleComments);
 

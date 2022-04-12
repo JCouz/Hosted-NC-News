@@ -1,6 +1,7 @@
 const {
   fetchArticle,
   updateArticleVotes,
+  updateCommentVotes,
   fetchArticles,
   fetchArticleComments,
   createArticleComment,
@@ -65,6 +66,18 @@ exports.patchArticle = (req, res, next) => {
   updateArticleVotes(article_id, inc_votes)
     .then((article) => {
       res.status(200).send({ article });
+    })
+    .catch(next);
+};
+
+exports.patchComment = (req, res, next) => {
+  const article_id = req.params.article_id;
+
+  const { inc_votes } = req.body;
+
+  updateCommentVotes(article_id, inc_votes)
+    .then((comment) => {
+      res.status(200).send({ comment });
     })
     .catch(next);
 };
