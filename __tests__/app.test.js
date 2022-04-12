@@ -473,61 +473,59 @@ describe('DELETE /api/comments/:comment_id', () => {
   });
 });
 
-// describe('PATCH /api/comments/:comment_id', () => {
-//   test('status:200 - should return an updated comment where votes = 1', () => {
-//     return request(app)
-//       .patch('/api/comments/1')
-//       .send({ inc_votes: 1 })
-//       .expect(200)
-//       .then((response) => {
-//         expect(response.body.comment).toEqual(
-//           expect.objectContaining({
-//             article_id: 1,
-//             title: 'Living in the shadow of a great man',
-//             topic: 'mitch',
-//             author: 'butter_bridge',
-//             body: 'I find this existence challenging',
-//             created_at: expect.any(String),
-//             votes: 101,
-//           })
-//         );
-//       });
-//   });
-//   test('status:200 - should return an updated article where votes = 0', () => {
-//     return request(app)
-//       .patch('/api/comments/1')
-//       .send({ inc_votes: -100 })
-//       .expect(200)
-//       .then((response) => {
-//         expect(response.body.comment).toEqual(
-//           expect.objectContaining({
-//             article_id: 1,
-//             title: 'Living in the shadow of a great man',
-//             topic: 'mitch',
-//             author: 'butter_bridge',
-//             body: 'I find this existence challenging',
-//             created_at: expect.any(String),
-//             votes: 0,
-//           })
-//         );
-//       });
-//   });
-//   test('status: 400 responds with message when body is malformed', () => {
-//     return request(app)
-//       .patch('/api/comments/10000')
-//       .send({ inc_votes: 'hello' })
-//       .expect(400)
-//       .then((response) => {
-//         expect(response.body.msg).toBe('Bad request. Invalid inc_votes');
-//       });
-//   });
-//   test('status: 400 responds with message when body is malformed', () => {
-//     return request(app)
-//       .patch('/api/articles/10000')
-//       .send({ vote: -1000 })
-//       .expect(400)
-//       .then((response) => {
-//         expect(response.body.msg).toBe('Bad request. Invalid inc_votes');
-//       });
-//   });
-// });
+describe('PATCH /api/comments/:comment_id', () => {
+  test('status:200 - should return an updated comment where votes = 15', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 2,
+            body: 'The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.',
+            article_id: 1,
+            author: 'butter_bridge',
+            votes: 15,
+            created_at: expect.any(String),
+          })
+        );
+      });
+  });
+  test('status:200 - should return an updated article where votes = 0', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: -14 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 2,
+            body: 'The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.',
+            article_id: 1,
+            author: 'butter_bridge',
+            votes: 0,
+            created_at: expect.any(String),
+          })
+        );
+      });
+  });
+  test('status: 400 responds with message when body is malformed', () => {
+    return request(app)
+      .patch('/api/comments/10000')
+      .send({ inc_votes: 'hello' })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe('Bad request. Invalid inc_votes');
+      });
+  });
+  test('status: 400 responds with message when body is malformed', () => {
+    return request(app)
+      .patch('/api/comments/10000')
+      .send({ vote: -1000 })
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe('Bad request. Invalid inc_votes');
+      });
+  });
+});
